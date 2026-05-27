@@ -18,181 +18,71 @@
     --green-bg: #eaf3de;
     --green-border: #8fbb5a;
     --green-text: #27500a;
-    --warn-bg: #faeeda;
+    --warn-bg: #fef3cd;
     --warn-border: #e09f27;
     --warn-text: #633806;
+    --red-bg: #fde8e8;
+    --red-border: #e05555;
+    --red-text: #7a1010;
     --accent: #1a1a18;
     --radius: 10px;
     --radius-sm: 6px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 2rem 1rem;
-  }
-  .container {
-    max-width: 680px;
-    margin: 0 auto;
-  }
-  header {
-    margin-bottom: 2rem;
-  }
-  header h1 {
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: -0.3px;
-    margin-bottom: 4px;
-  }
-  header p {
-    font-size: 14px;
-    color: var(--text2);
-    line-height: 1.6;
-  }
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-  }
-  #drop-zone {
-    border: 1.5px dashed var(--border2);
-    border-radius: var(--radius);
-    padding: 2.5rem 1.5rem;
-    text-align: center;
-    cursor: pointer;
-    transition: background 0.15s, border-color 0.15s;
-    background: var(--surface);
-    margin-bottom: 1rem;
-  }
-  #drop-zone:hover, #drop-zone.drag-over {
-    background: var(--surface2);
-    border-color: var(--accent);
-  }
-  #drop-zone svg {
-    display: block;
-    margin: 0 auto 12px;
-    color: var(--text3);
-  }
-  #drop-zone h2 {
-    font-size: 15px;
-    font-weight: 500;
-    margin-bottom: 4px;
-    color: var(--text);
-  }
-  #drop-zone p {
-    font-size: 13px;
-    color: var(--text2);
-  }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 2rem 1rem; }
+  .container { max-width: 720px; margin: 0 auto; }
+  header { margin-bottom: 2rem; }
+  header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 4px; }
+  header p { font-size: 14px; color: var(--text2); line-height: 1.6; }
+  #drop-zone { border: 1.5px dashed var(--border2); border-radius: var(--radius); padding: 2.5rem 1.5rem; text-align: center; cursor: pointer; transition: background 0.15s, border-color 0.15s; background: var(--surface); margin-bottom: 1rem; }
+  #drop-zone:hover, #drop-zone.drag-over { background: var(--surface2); border-color: var(--accent); }
+  #drop-zone svg { display: block; margin: 0 auto 12px; color: var(--text3); }
+  #drop-zone h2 { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+  #drop-zone p { font-size: 13px; color: var(--text2); }
   #file-input { display: none; }
-  #status-msg {
-    display: none;
-    font-size: 13px;
-    color: var(--text2);
-    text-align: center;
-    padding: 8px;
-  }
+  #status-msg { display: none; font-size: 13px; color: var(--text2); text-align: center; padding: 8px; }
   #results { display: none; }
-  .summary-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 16px;
-    border-radius: var(--radius-sm);
-    margin-bottom: 1rem;
-    font-size: 14px;
-    font-weight: 500;
-  }
+  .summary-bar { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 14px; font-weight: 500; }
   .summary-bar.pass { background: var(--green-bg); color: var(--green-text); border: 1px solid var(--green-border); }
   .summary-bar.fail { background: var(--warn-bg); color: var(--warn-text); border: 1px solid var(--warn-border); }
-  .summary-bar svg { flex-shrink: 0; }
-  .section-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin: 1.25rem 0 0.5rem;
-  }
-  .check-item {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    padding: 10px 12px;
-    border-radius: var(--radius-sm);
-    margin-bottom: 6px;
-    font-size: 13px;
-    line-height: 1.5;
-  }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin: 1.25rem 0 0.5rem; display: flex; align-items: center; gap: 6px; }
+  .section-label span { font-size: 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 1px 7px; color: var(--text2); font-weight: 600; letter-spacing: 0; text-transform: none; }
+  .check-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: var(--radius-sm); margin-bottom: 5px; font-size: 13px; line-height: 1.5; }
   .check-item.ok { background: var(--green-bg); border: 1px solid var(--green-border); }
-  .check-item.fail { background: var(--warn-bg); border: 1px solid var(--warn-border); }
+  .check-item.warn { background: var(--warn-bg); border: 1px solid var(--warn-border); }
   .check-item svg { flex-shrink: 0; margin-top: 1px; }
-  .check-item .check-sheet {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text2);
-    margin-bottom: 2px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-  .check-item .check-msg { color: var(--text); }
-  .actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 1.25rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border);
-    flex-wrap: wrap;
-  }
-  button {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border2);
-    background: var(--surface);
-    color: var(--text);
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.1s;
-  }
+  .check-sheet { font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .check-msg { color: var(--text); }
+  .actions { display: flex; gap: 10px; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  button { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border2); background: var(--surface); color: var(--text); font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.1s; }
   button:hover { background: var(--surface2); }
-  button:active { transform: scale(0.98); }
-  footer {
-    text-align: center;
-    font-size: 12px;
-    color: var(--text3);
-    margin-top: 2rem;
-  }
+  footer { text-align: center; font-size: 12px; color: var(--text3); margin-top: 2rem; }
+  .progress-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1rem; display: none; }
+  .progress-label { font-size: 13px; color: var(--text2); margin-bottom: 8px; }
+  .progress-bar { height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.3s; }
 </style>
 </head>
 <body>
 <div class="container">
-
   <header>
     <h1>📋 Vulnerability Report Checker</h1>
-    <p>Upload your Excel report to check for missing fields, stale dates, filename mismatches, and cross-sheet inconsistencies.</p>
+    <p>Upload your Excel report (.xlsx) to validate all 6 sheets — dates, fields, cross-sheet totals, and filename format.</p>
   </header>
 
-  <div id="drop-zone"
-    onclick="document.getElementById('file-input').click()"
-    ondragover="event.preventDefault(); this.classList.add('drag-over')"
-    ondragleave="this.classList.remove('drag-over')"
-    ondrop="handleDrop(event)">
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
-    </svg>
+  <div id="drop-zone" onclick="document.getElementById('file-input').click()" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event)">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
     <h2>Drop your Excel file here</h2>
     <p>or click to browse — .xlsx files only</p>
     <input id="file-input" type="file" accept=".xlsx" onchange="handleFile(event)">
   </div>
 
   <div id="status-msg"></div>
+
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-label" id="progress-label">Reading file…</div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
 
   <div id="results">
     <div id="summary-bar" class="summary-bar"></div>
@@ -210,39 +100,42 @@
   </div>
 
   <footer>All checks run locally in your browser — no data is uploaded anywhere.</footer>
-
 </div>
 
 <script>
 let _fileName = '';
 let _lastChecks = [];
 
+// ── Helpers ──────────────────────────────────────────────
 function handleDrop(e) {
   e.preventDefault();
   document.getElementById('drop-zone').classList.remove('drag-over');
-  const file = e.dataTransfer.files[0];
-  if (file) processFile(file);
+  const f = e.dataTransfer.files[0];
+  if (f) processFile(f);
 }
-function handleFile(e) {
-  const file = e.target.files[0];
-  if (file) processFile(file);
+function handleFile(e) { const f = e.target.files[0]; if (f) processFile(f); }
+
+function setProgress(label, pct) {
+  const w = document.getElementById('progress-wrap');
+  w.style.display = 'block';
+  document.getElementById('progress-label').textContent = label;
+  document.getElementById('progress-fill').style.width = pct + '%';
 }
-function setStatus(msg) {
-  const el = document.getElementById('status-msg');
-  el.style.display = 'block';
-  el.textContent = msg;
-}
+function hideProgress() { document.getElementById('progress-wrap').style.display = 'none'; }
+
 function processFile(file) {
-  if (!file.name.endsWith('.xlsx')) { setStatus('Please upload a .xlsx file.'); return; }
+  if (!file.name.endsWith('.xlsx')) { alert('Please upload a .xlsx file.'); return; }
   _fileName = file.name.replace(/\.xlsx$/i, '');
   document.getElementById('results').style.display = 'none';
-  setStatus('Reading file…');
+  setProgress('Reading file…', 20);
   const reader = new FileReader();
   reader.onload = function(e) {
     try {
+      setProgress('Parsing sheets…', 50);
       const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array', cellDates: true });
-      runChecks(wb);
-    } catch(err) { setStatus('Could not read file: ' + err.message); }
+      setProgress('Running checks…', 80);
+      setTimeout(() => { runChecks(wb); hideProgress(); }, 100);
+    } catch(err) { hideProgress(); alert('Could not read file: ' + err.message); }
   };
   reader.readAsArrayBuffer(file);
 }
@@ -252,63 +145,54 @@ function sheetToJSON(wb, idx) {
   if (!name) return null;
   return XLSX.utils.sheet_to_json(wb.Sheets[name], { header: 1, defval: '' });
 }
-function flatText(rows) {
-  return rows.flat().map(c => String(c).trim()).filter(Boolean);
-}
-function findDateValue(rows) {
-  for (const row of rows) {
-    for (const cell of row) {
-      if (cell instanceof Date && cell.getFullYear() > 2000) return cell;
-      if (typeof cell === 'number' && cell > 40000 && cell < 60000) {
-        try { const d = XLSX.SSF.parse_date_code(cell); if (d) return new Date(d.y, d.m-1, d.d); } catch(e) {}
-      }
-      if (typeof cell === 'string' && cell.trim()) {
-        const p = Date.parse(cell);
-        if (!isNaN(p)) { const d = new Date(p); if (d.getFullYear() > 2000 && d.getFullYear() < 2100) return d; }
-      }
-    }
-  }
-  return null;
-}
-function findAllDates(rows) {
+
+function flatText(rows) { return rows.flat().map(c => String(c).trim()).filter(Boolean); }
+
+function cellVal(rows, rowIdx, colIdx) { return rows[rowIdx] ? String(rows[rowIdx][colIdx] || '').trim() : ''; }
+
+// Find any date-like value in all cells
+function findDates(rows) {
   const dates = [];
   for (const row of rows) {
     for (const cell of row) {
-      let d = null;
-      if (cell instanceof Date && cell.getFullYear() > 2000) d = cell;
-      else if (typeof cell === 'number' && cell > 40000 && cell < 60000) {
-        try { const p = XLSX.SSF.parse_date_code(cell); if (p) d = new Date(p.y, p.m-1, p.d); } catch(e) {}
-      } else if (typeof cell === 'string' && cell.trim()) {
-        const p = Date.parse(cell);
-        if (!isNaN(p)) { const tmp = new Date(p); if (tmp.getFullYear() > 2000 && tmp.getFullYear() < 2100) d = tmp; }
-      }
+      const d = toDate(cell);
       if (d) dates.push(d);
     }
   }
   return dates;
 }
-function monthYear(d) { return d.toLocaleString('default', { month: 'long', year: 'numeric' }); }
-function monthYearShort(d) { return d.toLocaleString('default', { month: 'short', year: 'numeric' }); }
-function filenameHasMonthYear(fn, d) {
-  const f = fn.toLowerCase();
-  const full = d.toLocaleString('default', { month: 'long' }).toLowerCase();
-  const short = d.toLocaleString('default', { month: 'short' }).toLowerCase();
-  const year = String(d.getFullYear());
-  const mm = String(d.getMonth() + 1).padStart(2, '0');
-  return (f.includes(year)) && (f.includes(full) || f.includes(short) || f.includes(mm));
+
+function toDate(cell) {
+  if (cell instanceof Date && cell.getFullYear() > 2000) return cell;
+  if (typeof cell === 'number' && cell > 40000 && cell < 70000) {
+    try { const p = XLSX.SSF.parse_date_code(cell); if (p) return new Date(p.y, p.m-1, p.d); } catch(e) {}
+  }
+  if (typeof cell === 'string' && cell.trim().length > 4) {
+    const p = Date.parse(cell);
+    if (!isNaN(p)) { const d = new Date(p); if (d.getFullYear() > 2000 && d.getFullYear() < 2100) return d; }
+  }
+  return null;
 }
-function extractAppName(rows) {
-  for (const row of rows) {
-    for (let i = 0; i < row.length; i++) {
-      if (/application|app name|system name|project name/i.test(String(row[i]))) {
-        for (let j = i+1; j < row.length; j++) {
-          const v = String(row[j]).trim();
-          if (v && v.length > 1) return v;
+
+function fmtDate(d) { return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }); }
+function fmtMY(d)   { return d.toLocaleString('default', { month: 'long', year: 'numeric' }); }
+function fmtMYShort(d) { return d.toLocaleString('default', { month: 'short', year: 'numeric' }); }
+function sameMonthYear(a, b) { return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth(); }
+
+// Search all cells for a keyword and return the value in the NEXT non-empty cell (same row or next row same col)
+function findValueNear(rows, keyword) {
+  for (let r = 0; r < rows.length; r++) {
+    for (let c = 0; c < rows[r].length; c++) {
+      if (new RegExp(keyword, 'i').test(String(rows[r][c]))) {
+        // check same row next cols
+        for (let nc = c+1; nc < rows[r].length; nc++) {
+          const v = String(rows[r][nc]).trim();
+          if (v) return v;
         }
-        const ri = rows.indexOf(row);
-        if (ri+1 < rows.length) {
-          const v = String(rows[ri+1][i]).trim();
-          if (v && v.length > 1) return v;
+        // check next rows same col
+        for (let nr = r+1; nr < Math.min(r+4, rows.length); nr++) {
+          const v = String(rows[nr][c]).trim();
+          if (v) return v;
         }
       }
     }
@@ -316,181 +200,414 @@ function extractAppName(rows) {
   return null;
 }
 
+function hasKeyword(rows, keyword) {
+  return flatText(rows).some(t => new RegExp(keyword, 'i').test(t));
+}
+
+function ok(sheet, msg)   { return { ok: true,  sheet, msg }; }
+function fail(sheet, msg) { return { ok: false, sheet, msg }; }
+
+// ── MAIN CHECKS ──────────────────────────────────────────
 function runChecks(wb) {
-  document.getElementById('status-msg').style.display = 'none';
-  const checks = { filename: [], sheets: [], crosssheet: [] };
+  const checks = { filename: [], cover: [], version: [], scope: [], exec: [], desc: [], findings: [], cross: [] };
   const sheets = wb.SheetNames;
 
   if (sheets.length < 6) {
-    checks.sheets.push({ ok: false, sheet: 'Workbook', msg: `Only ${sheets.length} sheet(s) found — expected 6.` });
+    checks.cover.push(fail('Workbook', `Only ${sheets.length} sheet(s) found — expected 6.`));
   }
 
-  const s0 = sheetToJSON(wb, 0);
-  const s1 = sheetToJSON(wb, 1);
-  const s2 = sheetToJSON(wb, 2);
-  const s3 = sheetToJSON(wb, 3);
-  const s4 = sheetToJSON(wb, 4);
-  const s5 = sheetToJSON(wb, 5);
+  const s0 = sheetToJSON(wb, 0); // Cover
+  const s1 = sheetToJSON(wb, 1); // Version control
+  const s2 = sheetToJSON(wb, 2); // Scope
+  const s3 = sheetToJSON(wb, 3); // Executive summary
+  const s4 = sheetToJSON(wb, 4); // Vulnerability descriptions
+  const s5 = sheetToJSON(wb, 5); // Valid findings / Instances
 
-  // Cover date
-  let coverDate = null;
+  // ════════════════════════════════════════
+  // SHEET 1 — COVER
+  // Date     → B8  (row 7, col 1)  MM/DD/YYYY
+  // App Name → A5  (row 4, col 0)  must not be empty
+  // Scan Type→ row 11 (index 10)   first non-empty cell
+  // ════════════════════════════════════════
+  let coverDate = null, coverAppName = null, coverScanType = null;
   if (s0) {
-    coverDate = findDateValue(s0);
-    if (!coverDate) {
-      checks.sheets.push({ ok: false, sheet: 'Cover (sheet 1)', msg: 'No date found — report date may be missing or not formatted as a date.' });
+
+    // ── Date: B8 (row index 7, col index 1) ──
+    const rawB8   = (s0[7] || [])[1];
+    const b8Str   = String(rawB8 || '').trim();
+    const b8Date  = toDate(rawB8);
+    const mmddRe  = /^(0?[1-9]|1[0-2])\/(0?[1-9]|[12]\d|3[01])\/\d{4}$/;
+    if (!b8Date) {
+      checks.cover.push(fail('Cover — Date (B8)', `Cell B8 is "${b8Str || 'empty'}" — a valid date in MM/DD/YYYY format is required.`));
     } else {
+      coverDate = b8Date;
       const daysAgo = Math.floor((Date.now() - coverDate.getTime()) / 86400000);
-      if (daysAgo > 90) {
-        checks.sheets.push({ ok: false, sheet: 'Cover (sheet 1)', msg: `Date is ${coverDate.toLocaleDateString()} — ${daysAgo} days ago. May not have been updated.` });
+      // Check string format only when the cell is stored as text
+      const badFormat = b8Str && !(rawB8 instanceof Date) && typeof rawB8 !== 'number' && !mmddRe.test(b8Str);
+      if (badFormat) {
+        checks.cover.push(fail('Cover — Date (B8)', `Date found (${fmtDate(coverDate)}) but cell B8 format should be MM/DD/YYYY — please reformat.`));
+      } else if (daysAgo > 90) {
+        checks.cover.push(fail('Cover — Date (B8)', `Date in B8 is ${fmtDate(coverDate)} (${daysAgo} days ago) — may not have been updated.`));
       } else {
-        checks.sheets.push({ ok: true, sheet: 'Cover (sheet 1)', msg: `Date found: ${coverDate.toLocaleDateString()} (${daysAgo} day(s) ago).` });
+        checks.cover.push(ok('Cover — Date (B8)', `Date: ${fmtDate(coverDate)} (${daysAgo} day(s) ago).`));
+      }
+    }
+
+    // ── App Name: A5 (row index 4, col index 0) — must not be empty ──
+    const rawA5 = String((s0[4] || [])[0] || '').trim();
+    if (!rawA5) {
+      checks.cover.push(fail('Cover — Application Name (A5)', 'Cell A5 is empty — application name must not be blank.'));
+    } else {
+      coverAppName = rawA5;
+      checks.cover.push(ok('Cover — Application Name (A5)', `Application name: "${coverAppName}".`));
+    }
+
+    // ── Scan Type: row 11 (index 10) — first non-empty cell ──
+    const row11Cells = (s0[10] || []).map(c => String(c).trim()).filter(v => v !== '');
+    const row11Val   = row11Cells[0] || null;
+    const knownScans = /^(SAST|DAST|SCA|IAST)$/i;
+    const scanRe     = /SAST|DAST|SCA|IAST/i;
+    if (!row11Val) {
+      checks.cover.push(fail('Cover — Scan Type (row 11)', 'Row 11 is empty — scan type (SAST / DAST / SCA) expected here.'));
+    } else {
+      const m = row11Val.match(scanRe);
+      if (m) {
+        coverScanType = m[0].toUpperCase();
+        checks.cover.push(ok('Cover — Scan Type (row 11)', `Scan type: "${coverScanType}".`));
+      } else {
+        coverScanType = row11Val;
+        checks.cover.push(fail('Cover — Scan Type (row 11)', `Row 11 contains "${row11Val}" — not recognised (expected SAST, DAST, or SCA).`));
       }
     }
   } else {
-    checks.sheets.push({ ok: false, sheet: 'Cover (sheet 1)', msg: 'Sheet not found.' });
+    checks.cover.push(fail('Cover (sheet 1)', 'Sheet not found.'));
   }
 
-  // Version control
+  // ════════════════════════════════════════
+  // SHEET 2 — VERSION CONTROL
+  // A6 → Version History date  (row 5, col 0)  must match cover B8
+  // B6 → Modified By           (row 5, col 1)  must not be empty
+  // C6 → Previous reported date(row 5, col 2)  must not be empty
+  // E6 → Analyst Name          (row 5, col 4)  must not be empty
+  // F6 → Analyst Role          (row 5, col 5)  must not be empty
+  // ════════════════════════════════════════
   let versionLatestDate = null;
   if (s1) {
-    const dataRows = s1.filter(r => r.some(c => String(c).trim() !== ''));
-    if (dataRows.length < 2) {
-      checks.sheets.push({ ok: false, sheet: 'Version control (sheet 2)', msg: 'No history entries found.' });
+    const vRow = s1[5] || []; // row 6 = index 5
+
+    // A6 — Version History date
+    const rawA6  = vRow[0];
+    const a6Date = toDate(rawA6);
+    const a6Str  = String(rawA6 || '').trim();
+    if (!a6Date) {
+      checks.version.push(fail('Version Control — Version Date (A6)', `Cell A6 is "${a6Str || 'empty'}" — a valid date is required.`));
     } else {
-      const hasName = flatText(s1).some(t => /[A-Za-z]{2,}\s[A-Za-z]{2,}/.test(t));
-      const allDates = findAllDates(s1);
-      if (allDates.length) versionLatestDate = allDates.reduce((a, b) => a > b ? a : b);
-      if (!hasName) {
-        checks.sheets.push({ ok: false, sheet: 'Version control (sheet 2)', msg: `${dataRows.length - 1} row(s) found but no analyst name detected.` });
+      versionLatestDate = a6Date;
+      if (coverDate) {
+        if (sameMonthYear(a6Date, coverDate))
+          checks.version.push(ok('Version Control — Version Date (A6)', `Date ${fmtDate(a6Date)} matches cover date (${fmtMY(coverDate)}).`));
+        else
+          checks.version.push(fail('Version Control — Version Date (A6)', `A6 date (${fmtDate(a6Date)}) does not match cover B8 date (${fmtMY(coverDate)}).`));
       } else {
-        checks.sheets.push({ ok: true, sheet: 'Version control (sheet 2)', msg: `${dataRows.length - 1} version row(s) with analyst name present.` });
+        checks.version.push(ok('Version Control — Version Date (A6)', `Date found: ${fmtDate(a6Date)}.`));
       }
     }
-  } else {
-    checks.sheets.push({ ok: false, sheet: 'Version control (sheet 2)', msg: 'Sheet not found.' });
-  }
 
-  // Scope — app name
-  let appName = null;
-  if (s2) {
-    appName = extractAppName(s2);
-    if (!appName) {
-      checks.sheets.push({ ok: false, sheet: 'Scope (sheet 3)', msg: 'Could not detect an application name. Ensure it is clearly labeled.' });
+    // B6 — Modified By
+    const rawB6 = String(vRow[1] || '').trim();
+    if (!rawB6)
+      checks.version.push(fail('Version Control — Modified By (B6)', 'Cell B6 is empty — Modified By must not be blank.'));
+    else
+      checks.version.push(ok('Version Control — Modified By (B6)', `Modified By: "${rawB6}".`));
+
+    // C6 — Previous reported date
+    const rawC6  = vRow[2];
+    const c6Date = toDate(rawC6);
+    const c6Str  = String(rawC6 || '').trim();
+    if (!c6Date) {
+      checks.version.push(fail('Version Control — Previous Date (C6)', `Cell C6 is "${c6Str || 'empty'}" — previous reported date is required here.`));
     } else {
-      checks.sheets.push({ ok: true, sheet: 'Scope (sheet 3)', msg: `Application name detected: "${appName}".` });
+      checks.version.push(ok('Version Control — Previous Date (C6)', `Previous reported date: ${fmtDate(c6Date)}.`));
     }
+
+    // E6 — Analyst Name
+    const rawE6 = String(vRow[4] || '').trim();
+    if (!rawE6)
+      checks.version.push(fail('Version Control — Analyst Name (E6)', 'Cell E6 is empty — analyst name must not be blank.'));
+    else
+      checks.version.push(ok('Version Control — Analyst Name (E6)', `Analyst name: "${rawE6}".`));
+
+    // F6 — Analyst Role
+    const rawF6 = String(vRow[5] || '').trim();
+    if (!rawF6)
+      checks.version.push(fail('Version Control — Analyst Role (F6)', 'Cell F6 is empty — analyst role must not be blank.'));
+    else
+      checks.version.push(ok('Version Control — Analyst Role (F6)', `Analyst role: "${rawF6}".`));
+
   } else {
-    checks.sheets.push({ ok: false, sheet: 'Scope (sheet 3)', msg: 'Sheet not found.' });
+    checks.version.push(fail('Version Control (sheet 2)', 'Sheet not found.'));
   }
 
-  // Executive summary
-  let execTotal = 0;
+  // ════════════════════════════════════════
+  // SHEET 3 — SCOPE
+  // Application Name → C3 (row 2, col 2) must match cover A5
+  // Tools            → search all cells
+  // Report Type      → search all cells
+  // ════════════════════════════════════════
+  let scopeAppName = null;
+  if (s2) {
+
+    // C3 — Application Name (row index 2, col index 2)
+    const rawC3 = String((s2[2] || [])[2] || '').trim();
+    if (!rawC3) {
+      checks.scope.push(fail('Scope — Application Name (C3)', 'Cell C3 is empty — application name is required here.'));
+    } else {
+      scopeAppName = rawC3;
+      checks.scope.push(ok('Scope — Application Name (C3)', `Application name: "${scopeAppName}".`));
+      // Cross-check with cover A5
+      if (coverAppName) {
+        if (scopeAppName.toLowerCase() === coverAppName.toLowerCase())
+          checks.cross.push(ok('Cover A5 ↔ Scope C3 — App Name', `Application name matches: "${coverAppName}".`));
+        else
+          checks.cross.push(fail('Cover A5 ↔ Scope C3 — App Name', `Cover A5 says "${coverAppName}" but Scope C3 says "${scopeAppName}" — these must match.`));
+      }
+    }
+
+    // Tools — search all cells
+    const hasTool = hasKeyword(s2, 'tool|scanner|sonarqube|burp|veracode|checkmarx|fortify|nessus|owasp|semgrep|appscan|qualys|acunetix');
+    if (!hasTool)
+      checks.scope.push(fail('Scope — Tools', 'No scanning tool found. Ensure the tool name is listed (e.g. SonarQube, Burp Suite, Checkmarx).'));
+    else
+      checks.scope.push(ok('Scope — Tools', 'Scanning tool reference found.'));
+
+    // Report Type — search all cells
+    const hasReportType = hasKeyword(s2, 'report type|type of report|assessment type|pentest|vulnerability assessment|SAST|DAST|SCA');
+    if (!hasReportType)
+      checks.scope.push(fail('Scope — Report Type', 'Report type not found. Ensure it is labeled (e.g. "Report Type: SAST Assessment").'));
+    else
+      checks.scope.push(ok('Scope — Report Type', 'Report type reference found.'));
+
+  } else {
+    checks.scope.push(fail('Scope (sheet 3)', 'Sheet not found.'));
+  }
+
+  // ════════════════════════════════════════
+  // SHEET 4 — EXECUTIVE SUMMARY
+  // C11 → Risk Summary Total / Exploitability Count  (row 10, col 2)
+  // E51 → True Positives in False-Positive Analysis  (row 50, col 4)
+  // Severity Grand Total → sum of High+Med+Low, must equal C11 and E51
+  // ════════════════════════════════════════
+  let execTP = 0, execHigh = 0, execMed = 0, execLow = 0, execSeverityTotal = 0, execRiskTotal = 0;
   if (s3) {
     const allText = flatText(s3);
-    const hasSev = allText.some(t => /^high$/i.test(t)) && allText.some(t => /^medium$/i.test(t));
-    const hasTotal = allText.some(t => /total/i.test(t));
-    const hasTPFP = allText.some(t => /true.?positive|false.?positive|\bTP\b|\bFP\b/i.test(t));
+
+    // ── C11: Risk Summary Total (row index 10, col index 2) ──
+    const rawC11 = String((s3[10] || [])[2] || '').trim();
+    execRiskTotal = parseInt(rawC11) || 0;
+    if (!rawC11 || isNaN(parseInt(rawC11))) {
+      checks.exec.push(fail('Executive Summary — Risk Summary Total (C11)', `Cell C11 is "${rawC11 || 'empty'}" — expected a number (Exploitability Count total).`));
+    } else {
+      checks.exec.push(ok('Executive Summary — Risk Summary Total (C11)', `Risk summary total: ${execRiskTotal}.`));
+    }
+
+    // ── E51: True Positives (row index 50, col index 4) ──
+    const rawE51 = String((s3[50] || [])[4] || '').trim();
+    execTP = parseInt(rawE51) || 0;
+    if (!rawE51 || isNaN(parseInt(rawE51))) {
+      checks.exec.push(fail('Executive Summary — True Positives (E51)', `Cell E51 is "${rawE51 || 'empty'}" — expected a number (True Positives count).`));
+    } else {
+      checks.exec.push(ok('Executive Summary — True Positives (E51)', `True Positives count: ${execTP}.`));
+    }
+
+    // ── Severity Grand Total: High + Medium + Low ──
+    for (const sev of ['high','medium','low']) {
+      const val = findValueNear(s3, `^${sev}$`);
+      const num = parseInt(val) || 0;
+      if (sev === 'high') execHigh = num;
+      if (sev === 'medium') execMed = num;
+      if (sev === 'low') execLow = num;
+    }
+    execSeverityTotal = execHigh + execMed + execLow;
+    const hasSev = allText.some(t => /^high$/i.test(t)) && allText.some(t => /^medium$/i.test(t)) && allText.some(t => /^low$/i.test(t));
     if (!hasSev) {
-      checks.sheets.push({ ok: false, sheet: 'Executive summary (sheet 4)', msg: 'Could not find High/Medium/Low severity labels.' });
-    } else if (!hasTotal) {
-      checks.sheets.push({ ok: false, sheet: 'Executive summary (sheet 4)', msg: 'Severity labels found but no "Total" label detected.' });
-    } else if (!hasTPFP) {
-      checks.sheets.push({ ok: false, sheet: 'Executive summary (sheet 4)', msg: 'Severity and total labels found, but True Positive / False Positive labels are missing.' });
+      checks.exec.push(fail('Executive Summary — Severity Grand Total', 'Could not find High / Medium / Low severity labels in Vulnerability Categories table.'));
     } else {
-      checks.sheets.push({ ok: true, sheet: 'Executive summary (sheet 4)', msg: 'Severity labels, totals, and TP/FP labels all present.' });
+      checks.exec.push(ok('Executive Summary — Severity Grand Total', `High: ${execHigh}, Medium: ${execMed}, Low: ${execLow} → Grand total: ${execSeverityTotal}.`));
     }
-    for (const row of s3) {
-      const rt = row.map(c => String(c).toLowerCase());
-      const ti = rt.findIndex(t => /^total$/i.test(t));
-      if (ti !== -1) execTotal = parseInt(row[ti+1]) || 0;
+
+    // ── Cross: C11 must equal E51 ──
+    if (execRiskTotal > 0 && execTP > 0) {
+      if (execRiskTotal === execTP)
+        checks.cross.push(ok('Exec Summary — C11 ↔ E51', `Risk summary total C11 (${execRiskTotal}) matches True Positives E51 (${execTP}).`));
+      else
+        checks.cross.push(fail('Exec Summary — C11 ↔ E51', `Risk summary total C11 (${execRiskTotal}) does not match True Positives E51 (${execTP}).`));
     }
+
+    // ── Cross: Severity Grand Total must equal C11 ──
+    if (execSeverityTotal > 0 && execRiskTotal > 0) {
+      if (execSeverityTotal === execRiskTotal)
+        checks.cross.push(ok('Exec Summary — Severity Total ↔ C11', `Severity grand total (${execSeverityTotal}) matches C11 (${execRiskTotal}).`));
+      else
+        checks.cross.push(fail('Exec Summary — Severity Total ↔ C11', `Severity grand total (${execSeverityTotal}) does not match C11 risk total (${execRiskTotal}).`));
+    }
+
+    // ── Cross: Severity Grand Total must equal E51 ──
+    if (execSeverityTotal > 0 && execTP > 0) {
+      if (execSeverityTotal === execTP)
+        checks.cross.push(ok('Exec Summary — Severity Total ↔ E51', `Severity grand total (${execSeverityTotal}) matches True Positives E51 (${execTP}).`));
+      else
+        checks.cross.push(fail('Exec Summary — Severity Total ↔ E51', `Severity grand total (${execSeverityTotal}) does not match True Positives E51 (${execTP}).`));
+    }
+
   } else {
-    checks.sheets.push({ ok: false, sheet: 'Executive summary (sheet 4)', msg: 'Sheet not found.' });
+    checks.exec.push(fail('Executive Summary (sheet 4)', 'Sheet not found.'));
   }
 
-  // Vulnerability descriptions
-  let descTotalInstances = 0, descVulnCount = 0;
+  // ════════════════════════════════════════
+  // SHEET 5 — VULNERABILITY DESCRIPTIONS
+  // Column A (index 0) = No. of Instances → SUM only
+  // Must match: Exec Summary Severity Grand Total, C11, E51
+  // ════════════════════════════════════════
+  let descInstancesSum = 0;
   if (s4) {
-    const dataRows = s4.filter((r, i) => i > 0 && r.some(c => String(c).trim() !== ''));
-    descVulnCount = dataRows.length;
-    if (!descVulnCount) {
-      checks.sheets.push({ ok: false, sheet: 'Vulnerability descriptions (sheet 5)', msg: 'No vulnerability entries found.' });
+    const dataRows = s4.filter((r, i) => i > 0 && String(r[0]).trim() !== '' && !isNaN(parseInt(String(r[0]))));
+    if (!dataRows.length) {
+      checks.desc.push(fail('Vuln Descriptions — Column A (No. of Instances)', 'No numeric values found in column A. Ensure instance counts are in column A starting from row 2.'));
     } else {
-      for (const row of dataRows) {
-        const nums = row.map(c => parseInt(String(c))).filter(n => !isNaN(n) && n > 0);
-        if (nums.length) descTotalInstances += Math.max(...nums);
+      descInstancesSum = dataRows.reduce((sum, r) => sum + (parseInt(String(r[0])) || 0), 0);
+      checks.desc.push(ok('Vuln Descriptions — Column A (No. of Instances)', `Sum of column A (No. of Instances): ${descInstancesSum}.`));
+
+      // Cross: col A sum vs exec severity grand total
+      if (execSeverityTotal > 0) {
+        if (descInstancesSum === execSeverityTotal)
+          checks.cross.push(ok('Vuln Descriptions col A ↔ Exec Severity Grand Total', `Instance sum (${descInstancesSum}) matches exec summary severity grand total (${execSeverityTotal}).`));
+        else
+          checks.cross.push(fail('Vuln Descriptions col A ↔ Exec Severity Grand Total', `Instance sum in col A (${descInstancesSum}) does not match exec summary severity grand total (${execSeverityTotal}). Difference: ${Math.abs(descInstancesSum - execSeverityTotal)}.`));
       }
-      checks.sheets.push({ ok: true, sheet: 'Vulnerability descriptions (sheet 5)', msg: `${descVulnCount} vulnerability row(s) with ${descTotalInstances} total instance(s).` });
+
+      // Cross: col A sum vs C11
+      if (execRiskTotal > 0) {
+        if (descInstancesSum === execRiskTotal)
+          checks.cross.push(ok('Vuln Descriptions col A ↔ Exec C11', `Instance sum (${descInstancesSum}) matches exec summary C11 (${execRiskTotal}).`));
+        else
+          checks.cross.push(fail('Vuln Descriptions col A ↔ Exec C11', `Instance sum in col A (${descInstancesSum}) does not match exec summary C11 (${execRiskTotal}). Difference: ${Math.abs(descInstancesSum - execRiskTotal)}.`));
+      }
+
+      // Cross: col A sum vs E51
+      if (execTP > 0) {
+        if (descInstancesSum === execTP)
+          checks.cross.push(ok('Vuln Descriptions col A ↔ Exec E51', `Instance sum (${descInstancesSum}) matches exec summary E51 (${execTP}).`));
+        else
+          checks.cross.push(fail('Vuln Descriptions col A ↔ Exec E51', `Instance sum in col A (${descInstancesSum}) does not match exec summary E51 (${execTP}). Difference: ${Math.abs(descInstancesSum - execTP)}.`));
+      }
     }
   } else {
-    checks.sheets.push({ ok: false, sheet: 'Vulnerability descriptions (sheet 5)', msg: 'Sheet not found.' });
+    checks.desc.push(fail('Vuln Descriptions (sheet 5)', 'Sheet not found.'));
   }
 
-  // Valid findings
-  let findingsCount = 0;
+  // ════════════════════════════════════════
+  // SHEET 6 — INSTANCES (VALID FINDINGS)
+  // Column B (index 1) = Vulnerability Name → COUNT non-empty rows
+  // Must match: Exec Summary C11, E51, Severity Grand Total, Descriptions col A sum
+  // ════════════════════════════════════════
+  let findingsColBCount = 0;
   if (s5) {
-    const dataRows = s5.filter((r, i) => i > 0 && r.some(c => String(c).trim() !== ''));
-    findingsCount = dataRows.length;
-    if (!findingsCount) {
-      checks.sheets.push({ ok: false, sheet: 'Valid findings (sheet 6)', msg: 'No findings rows found.' });
+    const dataRows = s5.filter((r, i) => i > 0 && String(r[1]).trim() !== '');
+    findingsColBCount = dataRows.length;
+    if (!findingsColBCount) {
+      checks.findings.push(fail('Instances — Column B (Vulnerability Name)', 'No vulnerability names found in column B. Ensure names start from row 2.'));
     } else {
-      checks.sheets.push({ ok: true, sheet: 'Valid findings (sheet 6)', msg: `${findingsCount} finding row(s) found.` });
+      checks.findings.push(ok('Instances — Column B (Vulnerability Name)', `${findingsColBCount} vulnerability name(s) found in column B.`));
+
+      // Cross: col B count vs exec C11
+      if (execRiskTotal > 0) {
+        if (findingsColBCount === execRiskTotal)
+          checks.cross.push(ok('Instances col B ↔ Exec C11', `Findings count (${findingsColBCount}) matches exec summary C11 (${execRiskTotal}).`));
+        else
+          checks.cross.push(fail('Instances col B ↔ Exec C11', `Findings count in col B (${findingsColBCount}) does not match exec summary C11 (${execRiskTotal}). Difference: ${Math.abs(findingsColBCount - execRiskTotal)}.`));
+      }
+
+      // Cross: col B count vs exec E51
+      if (execTP > 0) {
+        if (findingsColBCount === execTP)
+          checks.cross.push(ok('Instances col B ↔ Exec E51', `Findings count (${findingsColBCount}) matches exec summary E51 (${execTP}).`));
+        else
+          checks.cross.push(fail('Instances col B ↔ Exec E51', `Findings count in col B (${findingsColBCount}) does not match exec summary E51 (${execTP}). Difference: ${Math.abs(findingsColBCount - execTP)}.`));
+      }
+
+      // Cross: col B count vs exec severity grand total
+      if (execSeverityTotal > 0) {
+        if (findingsColBCount === execSeverityTotal)
+          checks.cross.push(ok('Instances col B ↔ Exec Severity Grand Total', `Findings count (${findingsColBCount}) matches exec severity grand total (${execSeverityTotal}).`));
+        else
+          checks.cross.push(fail('Instances col B ↔ Exec Severity Grand Total', `Findings count in col B (${findingsColBCount}) does not match exec severity grand total (${execSeverityTotal}). Difference: ${Math.abs(findingsColBCount - execSeverityTotal)}.`));
+      }
+
+      // Cross: col B count vs descriptions col A sum
+      if (descInstancesSum > 0) {
+        if (findingsColBCount === descInstancesSum)
+          checks.cross.push(ok('Instances col B ↔ Vuln Descriptions col A', `Findings count (${findingsColBCount}) matches description instance sum (${descInstancesSum}).`));
+        else
+          checks.cross.push(fail('Instances col B ↔ Vuln Descriptions col A', `Findings count in col B (${findingsColBCount}) does not match description instance sum col A (${descInstancesSum}). Difference: ${Math.abs(findingsColBCount - descInstancesSum)}.`));
+      }
     }
   } else {
-    checks.sheets.push({ ok: false, sheet: 'Valid findings (sheet 6)', msg: 'Sheet not found.' });
+    checks.findings.push(fail('Instances (sheet 6)', 'Sheet not found.'));
   }
 
-  // Cross-sheet: cover vs version dates
-  if (coverDate && versionLatestDate) {
-    const same = coverDate.getFullYear() === versionLatestDate.getFullYear() && coverDate.getMonth() === versionLatestDate.getMonth();
-    checks.crosssheet.push(same
-      ? { ok: true, sheet: 'Cover ↔ Version control', msg: `Both show ${monthYear(coverDate)}.` }
-      : { ok: false, sheet: 'Cover ↔ Version control', msg: `Cover date (${monthYear(coverDate)}) does not match latest version history date (${monthYear(versionLatestDate)}).` });
+  // ════════════════════════════════════════
+  // FILENAME CHECKS
+  // Must contain: SAST/DAST/SCA + app name from A5 + month & year from B8
+  // ════════════════════════════════════════
+  const fn = _fileName.toLowerCase();
+
+  // ── Scan type — must be present and match cover row 11 ──
+  const scanMatch = _fileName.match(/SAST|DAST|SCA|IAST/i);
+  if (!scanMatch) {
+    checks.filename.push(fail('Filename — Scan Type', 'Filename does not contain a scan type. Add SAST, DAST, or SCA.'));
+  } else {
+    const st = scanMatch[0].toUpperCase();
+    if (coverScanType && st !== coverScanType)
+      checks.filename.push(fail('Filename — Scan Type', `Filename has "${st}" but cover row 11 says "${coverScanType}" — these must match.`));
+    else
+      checks.filename.push(ok('Filename — Scan Type', `Scan type "${st}" present${coverScanType ? ' and matches cover sheet' : ''}.`));
   }
 
-  // Cross-sheet: exec total vs findings
-  if (execTotal > 0 && findingsCount > 0) {
-    checks.crosssheet.push(execTotal === findingsCount
-      ? { ok: true, sheet: 'Executive summary ↔ Valid findings', msg: `Total count (${execTotal}) matches Valid Findings rows (${findingsCount}).` }
-      : { ok: false, sheet: 'Executive summary ↔ Valid findings', msg: `Executive summary total (${execTotal}) does not match Valid Findings row count (${findingsCount}).` });
+  // ── App name — must match cover A5 ──
+  if (coverAppName) {
+    const appStripped = coverAppName.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const fnStripped  = fn.replace(/[^a-z0-9]/g, '');
+    if (fnStripped.includes(appStripped))
+      checks.filename.push(ok('Filename — Application Name', `Application name "${coverAppName}" (cover A5) found in filename.`));
+    else
+      checks.filename.push(fail('Filename — Application Name', `Filename "${_fileName}" does not contain "${coverAppName}" (from cover A5).`));
+  } else {
+    checks.filename.push(fail('Filename — Application Name', 'Cannot check — cover cell A5 is empty.'));
   }
 
-  // Cross-sheet: description instances vs findings
-  if (descTotalInstances > 0 && findingsCount > 0) {
-    checks.crosssheet.push(descTotalInstances === findingsCount
-      ? { ok: true, sheet: 'Vuln descriptions ↔ Valid findings', msg: `Instance count (${descTotalInstances}) matches Valid Findings rows (${findingsCount}).` }
-      : { ok: false, sheet: 'Vuln descriptions ↔ Valid findings', msg: `Description instances (${descTotalInstances}) do not match Valid Findings count (${findingsCount}).` });
-  }
-
-  // Filename: app name
-  if (appName) {
-    const fnStripped = _fileName.toLowerCase().replace(/[^a-z0-9]/g, '');
-    const appStripped = appName.toLowerCase().replace(/[^a-z0-9]/g, '');
-    checks.filename.push(fnStripped.includes(appStripped)
-      ? { ok: true, sheet: 'Filename — app name', msg: `Filename contains the application name "${appName}".` }
-      : { ok: false, sheet: 'Filename — app name', msg: `Filename "${_fileName}" does not appear to contain the app name "${appName}".` });
-  }
-
-  // Filename: month & year vs cover
+  // ── Month & year — must match date in cover B8 ──
   if (coverDate) {
-    checks.filename.push(filenameHasMonthYear(_fileName, coverDate)
-      ? { ok: true, sheet: 'Filename — cover date', msg: `Filename contains ${monthYearShort(coverDate)} matching the cover page date.` }
-      : { ok: false, sheet: 'Filename — cover date', msg: `Filename does not contain ${monthYearShort(coverDate)} (the cover page date).` });
+    const fullMonth  = coverDate.toLocaleString('default', { month: 'long' }).toLowerCase();
+    const shortMonth = coverDate.toLocaleString('default', { month: 'short' }).toLowerCase();
+    const year       = String(coverDate.getFullYear());
+    const mm         = String(coverDate.getMonth() + 1).padStart(2, '0');
+    const hasYear    = fn.includes(year);
+    const hasMonth   = fn.includes(fullMonth) || fn.includes(shortMonth) || fn.includes(mm);
+    if (hasYear && hasMonth)
+      checks.filename.push(ok('Filename — Month & Year', `Filename contains ${fmtMYShort(coverDate)} matching cover B8.`));
+    else
+      checks.filename.push(fail('Filename — Month & Year', `Filename should contain "${fmtMYShort(coverDate)}" to match the date in cover B8.`));
+  } else {
+    checks.filename.push(fail('Filename — Month & Year', 'Cannot check — no valid date found in cover cell B8.'));
   }
 
-  // Filename: month & year vs version history
-  if (versionLatestDate) {
-    checks.filename.push(filenameHasMonthYear(_fileName, versionLatestDate)
-      ? { ok: true, sheet: 'Filename — version history date', msg: `Filename month/year matches the latest version history date (${monthYearShort(versionLatestDate)}).` }
-      : { ok: false, sheet: 'Filename — version history date', msg: `Filename does not contain ${monthYearShort(versionLatestDate)} (the latest version history date).` });
-  }
-
-  _lastChecks = [...checks.filename, ...checks.sheets, ...checks.crosssheet];
+  _lastChecks = Object.values(checks).flat();
   renderResults(checks);
 }
 
+// ── RENDER ──────────────────────────────────────────────
 function renderResults(groups) {
-  const all = [...groups.filename, ...groups.sheets, ...groups.crosssheet];
+  const all = Object.values(groups).flat();
   const failCount = all.filter(c => !c.ok).length;
 
   const bar = document.getElementById('summary-bar');
@@ -499,27 +616,34 @@ function renderResults(groups) {
     ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> All ${all.length} checks passed — report looks good!`
     : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> ${failCount} issue(s) found across ${all.length} checks`;
 
+  const sections = [
+    { key: 'filename', label: 'Filename',                  items: groups.filename },
+    { key: 'cover',    label: 'Cover Sheet',               items: groups.cover    },
+    { key: 'version',  label: 'Version Control Sheet',     items: groups.version  },
+    { key: 'scope',    label: 'Scope Sheet',               items: groups.scope    },
+    { key: 'exec',     label: 'Executive Summary Sheet',   items: groups.exec     },
+    { key: 'desc',     label: 'Vulnerability Descriptions',items: groups.desc     },
+    { key: 'findings', label: 'Instances Sheet',           items: groups.findings },
+    { key: 'cross',    label: 'Cross-Sheet Consistency',   items: groups.cross    },
+  ];
+
+  const iconOk   = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3b6d11" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`;
+  const iconFail = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#854f0b" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+
   const container = document.getElementById('checks-container');
   container.innerHTML = '';
 
-  const sections = [
-    { label: 'Filename checks', items: groups.filename },
-    { label: 'Sheet checks', items: groups.sheets },
-    { label: 'Cross-sheet consistency', items: groups.crosssheet },
-  ];
-
   for (const sec of sections) {
-    if (!sec.items.length) continue;
+    if (!sec.items || !sec.items.length) continue;
+    const issueCount = sec.items.filter(c => !c.ok).length;
     const label = document.createElement('div');
     label.className = 'section-label';
-    label.textContent = sec.label;
+    label.innerHTML = sec.label + (issueCount > 0 ? ` <span>${issueCount} issue${issueCount>1?'s':''}</span>` : '');
     container.appendChild(label);
     for (const c of sec.items) {
       const item = document.createElement('div');
-      item.className = 'check-item ' + (c.ok ? 'ok' : 'fail');
-      item.innerHTML = c.ok
-        ? `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3b6d11" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><div><div class="check-sheet">${c.sheet}</div><div class="check-msg">${c.msg}</div></div>`
-        : `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#854f0b" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div><div class="check-sheet">${c.sheet}</div><div class="check-msg">${c.msg}</div></div>`;
+      item.className = 'check-item ' + (c.ok ? 'ok' : 'warn');
+      item.innerHTML = `${c.ok ? iconOk : iconFail}<div><div class="check-sheet">${c.sheet}</div><div class="check-msg">${c.msg}</div></div>`;
       container.appendChild(item);
     }
   }
