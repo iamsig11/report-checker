@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vulnerability Report Checker</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --bg: #f5f5f0;
+    --surface: #ffffff;
+    --surface2: #f0efea;
+    --border: #e0dfd8;
+    --border2: #cccbc4;
+    --text: #1a1a18;
+    --text2: #5a5a55;
+    --text3: #9a9a94;
+    --green-bg: #eaf3de;
+    --green-border: #8fbb5a;
+    --green-text: #27500a;
+    --warn-bg: #faeeda;
+    --warn-border: #e09f27;
+    --warn-text: #633806;
+    --accent: #1a1a18;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  header {
+    margin-bottom: 2rem;
+  }
+  header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin-bottom: 4px;
+  }
+  header p {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  #drop-zone {
+    border: 1.5px dashed var(--border2);
+    border-radius: var(--radius);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    background: var(--surface);
+    margin-bottom: 1rem;
+  }
+  #drop-zone:hover, #drop-zone.drag-over {
+    background: var(--surface2);
+    border-color: var(--accent);
+  }
+  #drop-zone svg {
+    display: block;
+    margin: 0 auto 12px;
+    color: var(--text3);
+  }
+  #drop-zone h2 {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+  #drop-zone p {
+    font-size: 13px;
+    color: var(--text2);
+  }
+  #file-input { display: none; }
+  #status-msg {
+    display: none;
+    font-size: 13px;
+    color: var(--text2);
+    text-align: center;
+    padding: 8px;
+  }
+  #results { display: none; }
+  .summary-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 1rem;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .summary-bar.pass { background: var(--green-bg); color: var(--green-text); border: 1px solid var(--green-border); }
+  .summary-bar.fail { background: var(--warn-bg); color: var(--warn-text); border: 1px solid var(--warn-border); }
+  .summary-bar svg { flex-shrink: 0; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin: 1.25rem 0 0.5rem;
+  }
+  .check-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 6px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .check-item.ok { background: var(--green-bg); border: 1px solid var(--green-border); }
+  .check-item.fail { background: var(--warn-bg); border: 1px solid var(--warn-border); }
+  .check-item svg { flex-shrink: 0; margin-top: 1px; }
+  .check-item .check-sheet {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text2);
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .check-item .check-msg { color: var(--text); }
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  button:hover { background: var(--surface2); }
+  button:active { transform: scale(0.98); }
+  footer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 2rem;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>📋 Vulnerability Report Checker</h1>
+    <p>Upload your Excel report to check for missing fields, stale dates, filename mismatches, and cross-sheet inconsistencies.</p>
+  </header>
+
+  <div id="drop-zone"
+    onclick="document.getElementById('file-input').click()"
+    ondragover="event.preventDefault(); this.classList.add('drag-over')"
+    ondragleave="this.classList.remove('drag-over')"
+    ondrop="handleDrop(event)">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+    </svg>
+    <h2>Drop your Excel file here</h2>
+    <p>or click to browse — .xlsx files only</p>
+    <input id="file-input" type="file" accept=".xlsx" onchange="handleFile(event)">
+  </div>
+
+  <div id="status-msg"></div>
+
+  <div id="results">
+    <div id="summary-bar" class="summary-bar"></div>
+    <div id="checks-container"></div>
+    <div class="actions">
+      <button onclick="document.getElementById('file-input').click()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.1"/></svg>
+        Check another file
+      </button>
+      <button onclick="copyReport()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <span id="copy-label">Copy report</span>
+      </button>
+    </div>
+  </div>
+
+  <footer>All checks run locally in your browser — no data is uploaded anywhere.</footer>
+
+</div>
+
+<script>
+let _fileName = '';
+let _lastChecks = [];
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) processFile(file);
+}
+function handleFile(e) {
+  const file = e.target.files[0];
+  if (file) processFile(file);
+}
+function setStatus(msg) {
+  const el = document.getElementById('status-msg');
+  el.style.display = 'block';
+  el.textContent = msg;
+}
+function processFile(file) {
+  if (!file.name.endsWith('.xlsx')) { setStatus('Please upload a .xlsx file.'); return; }
+  _fileName = file.name.replace(/\.xlsx$/i, '');
+  document.getElementById('results').style.display = 'none';
+  setStatus('Reading file…');
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array', cellDates: true });
+      runChecks(wb);
+    } catch(err) { setStatus('Could not read file: ' + err.message); }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function sheetToJSON(wb, idx) {
+  const name = wb.SheetNames[idx];
+  if (!name) return null;
+  return XLSX.utils.sheet_to_json(wb.Sheets[name], { header: 1, defval: '' });
+}
+function flatText(rows) {
+  return rows.flat().map(c => String(c).trim()).filter(Boolean);
+}
+function findDateValue(rows) {
+  for (const row of rows) {
+    for (const cell of row) {
+      if (cell instanceof Date && cell.getFullYear() > 2000) return cell;
+      if (typeof cell === 'number' && cell > 40000 && cell < 60000) {
+        try { const d = XLSX.SSF.parse_date_code(cell); if (d) return new Date(d.y, d.m-1, d.d); } catch(e) {}
+      }
+      if (typeof cell === 'string' && cell.trim()) {
+        const p = Date.parse(cell);
+        if (!isNaN(p)) { const d = new Date(p); if (d.getFullYear() > 2000 && d.getFullYear() < 2100) return d; }
+      }
+    }
+  }
+  return null;
+}
+function findAllDates(rows) {
+  const dates = [];
+  for (const row of rows) {
+    for (const cell of row) {
+      let d = null;
+      if (cell instanceof Date && cell.getFullYear() > 2000) d = cell;
+      else if (typeof cell === 'number' && cell > 40000 && cell < 60000) {
+        try { const p = XLSX.SSF.parse_date_code(cell); if (p) d = new Date(p.y, p.m-1, p.d); } catch(e) {}
+      } else if (typeof cell === 'string' && cell.trim()) {
+        const p = Date.parse(cell);
+        if (!isNaN(p)) { const tmp = new Date(p); if (tmp.getFullYear() > 2000 && tmp.getFullYear() < 2100) d = tmp; }
+      }
+      if (d) dates.push(d);
+    }
+  }
+  return dates;
+}
+function monthYear(d) { return d.toLocaleString('default', { month: 'long', year: 'numeric' }); }
+function monthYearShort(d) { return d.toLocaleString('default', { month: 'short', year: 'numeric' }); }
+function filenameHasMonthYear(fn, d) {
+  const f = fn.toLowerCase();
+  const full = d.toLocaleString('default', { month: 'long' }).toLowerCase();
+  const short = d.toLocaleString('default', { month: 'short' }).toLowerCase();
+  const year = String(d.getFullYear());
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  return (f.includes(year)) && (f.includes(full) || f.includes(short) || f.includes(mm));
+}
+function extractAppName(rows) {
+  for (const row of rows) {
+    for (let i = 0; i < row.length; i++) {
+      if (/application|app name|system name|project name/i.test(String(row[i]))) {
+        for (let j = i+1; j < row.length; j++) {
+          const v = String(row[j]).trim();
+          if (v && v.length > 1) return v;
+        }
+        const ri = rows.indexOf(row);
+        if (ri+1 < rows.length) {
+          const v = String(rows[ri+1][i]).trim();
+          if (v && v.length > 1) return v;
+        }
+      }
+    }
+  }
+  return null;
+}
+
+function runChecks(wb) {
+  document.getElementById('status-msg').style.display = 'none';
+  const checks = { filename: [], sheets: [], crosssheet: [] };
+  const sheets = wb.SheetNames;
+
+  if (sheets.length < 6) {
+    checks.sheets.push({ ok: false, sheet: 'Workbook', msg: `Only ${sheets.length} sheet(s) found — expected 6.` });
+  }
+
+  const s0 = sheetToJSON(wb, 0);
+  const s1 = sheetToJSON(wb, 1);
+  const s2 = sheetToJSON(wb, 2);
+  const s3 = sheetToJSON(wb, 3);
+  const s4 = sheetToJSON(wb, 4);
+  const s5 = sheetToJSON(wb, 5);
+
+  // Cover date
+  let coverDate = null;
+  if (s0) {
+    coverDate = findDateValue(s0);
+    if (!coverDate) {
+      checks.sheets.push({ ok: false, sheet: 'Cover (sheet 1)', msg: 'No date found — report date may be missing or not formatted as a date.' });
+    } else {
+      const daysAgo = Math.floor((Date.now() - coverDate.getTime()) / 86400000);
+      if (daysAgo > 90) {
+        checks.sheets.push({ ok: false, sheet: 'Cover (sheet 1)', msg: `Date is ${coverDate.toLocaleDateString()} — ${daysAgo} days ago. May not have been updated.` });
+      } else {
+        checks.sheets.push({ ok: true, sheet: 'Cover (sheet 1)', msg: `Date found: ${coverDate.toLocaleDateString()} (${daysAgo} day(s) ago).` });
+      }
+    }
+  } else {
+    checks.sheets.push({ ok: false, sheet: 'Cover (sheet 1)', msg: 'Sheet not found.' });
+  }
+
+  // Version control
+  let versionLatestDate = null;
+  if (s1) {
+    const dataRows = s1.filter(r => r.some(c => String(c).trim() !== ''));
+    if (dataRows.length < 2) {
+      checks.sheets.push({ ok: false, sheet: 'Version control (sheet 2)', msg: 'No history entries found.' });
+    } else {
+      const hasName = flatText(s1).some(t => /[A-Za-z]{2,}\s[A-Za-z]{2,}/.test(t));
+      const allDates = findAllDates(s1);
+      if (allDates.length) versionLatestDate = allDates.reduce((a, b) => a > b ? a : b);
+      if (!hasName) {
+        checks.sheets.push({ ok: false, sheet: 'Version control (sheet 2)', msg: `${dataRows.length - 1} row(s) found but no analyst name detected.` });
+      } else {
+        checks.sheets.push({ ok: true, sheet: 'Version control (sheet 2)', msg: `${dataRows.length - 1} version row(s) with analyst name present.` });
+      }
+    }
+  } else {
+    checks.sheets.push({ ok: false, sheet: 'Version control (sheet 2)', msg: 'Sheet not found.' });
+  }
+
+  // Scope — app name
+  let appName = null;
+  if (s2) {
+    appName = extractAppName(s2);
+    if (!appName) {
+      checks.sheets.push({ ok: false, sheet: 'Scope (sheet 3)', msg: 'Could not detect an application name. Ensure it is clearly labeled.' });
+    } else {
+      checks.sheets.push({ ok: true, sheet: 'Scope (sheet 3)', msg: `Application name detected: "${appName}".` });
+    }
+  } else {
+    checks.sheets.push({ ok: false, sheet: 'Scope (sheet 3)', msg: 'Sheet not found.' });
+  }
+
+  // Executive summary
+  let execTotal = 0;
+  if (s3) {
+    const allText = flatText(s3);
+    const hasSev = allText.some(t => /^high$/i.test(t)) && allText.some(t => /^medium$/i.test(t));
+    const hasTotal = allText.some(t => /total/i.test(t));
+    const hasTPFP = allText.some(t => /true.?positive|false.?positive|\bTP\b|\bFP\b/i.test(t));
+    if (!hasSev) {
+      checks.sheets.push({ ok: false, sheet: 'Executive summary (sheet 4)', msg: 'Could not find High/Medium/Low severity labels.' });
+    } else if (!hasTotal) {
+      checks.sheets.push({ ok: false, sheet: 'Executive summary (sheet 4)', msg: 'Severity labels found but no "Total" label detected.' });
+    } else if (!hasTPFP) {
+      checks.sheets.push({ ok: false, sheet: 'Executive summary (sheet 4)', msg: 'Severity and total labels found, but True Positive / False Positive labels are missing.' });
+    } else {
+      checks.sheets.push({ ok: true, sheet: 'Executive summary (sheet 4)', msg: 'Severity labels, totals, and TP/FP labels all present.' });
+    }
+    for (const row of s3) {
+      const rt = row.map(c => String(c).toLowerCase());
+      const ti = rt.findIndex(t => /^total$/i.test(t));
+      if (ti !== -1) execTotal = parseInt(row[ti+1]) || 0;
+    }
+  } else {
+    checks.sheets.push({ ok: false, sheet: 'Executive summary (sheet 4)', msg: 'Sheet not found.' });
+  }
+
+  // Vulnerability descriptions
+  let descTotalInstances = 0, descVulnCount = 0;
+  if (s4) {
+    const dataRows = s4.filter((r, i) => i > 0 && r.some(c => String(c).trim() !== ''));
+    descVulnCount = dataRows.length;
+    if (!descVulnCount) {
+      checks.sheets.push({ ok: false, sheet: 'Vulnerability descriptions (sheet 5)', msg: 'No vulnerability entries found.' });
+    } else {
+      for (const row of dataRows) {
+        const nums = row.map(c => parseInt(String(c))).filter(n => !isNaN(n) && n > 0);
+        if (nums.length) descTotalInstances += Math.max(...nums);
+      }
+      checks.sheets.push({ ok: true, sheet: 'Vulnerability descriptions (sheet 5)', msg: `${descVulnCount} vulnerability row(s) with ${descTotalInstances} total instance(s).` });
+    }
+  } else {
+    checks.sheets.push({ ok: false, sheet: 'Vulnerability descriptions (sheet 5)', msg: 'Sheet not found.' });
+  }
+
+  // Valid findings
+  let findingsCount = 0;
+  if (s5) {
+    const dataRows = s5.filter((r, i) => i > 0 && r.some(c => String(c).trim() !== ''));
+    findingsCount = dataRows.length;
+    if (!findingsCount) {
+      checks.sheets.push({ ok: false, sheet: 'Valid findings (sheet 6)', msg: 'No findings rows found.' });
+    } else {
+      checks.sheets.push({ ok: true, sheet: 'Valid findings (sheet 6)', msg: `${findingsCount} finding row(s) found.` });
+    }
+  } else {
+    checks.sheets.push({ ok: false, sheet: 'Valid findings (sheet 6)', msg: 'Sheet not found.' });
+  }
+
+  // Cross-sheet: cover vs version dates
+  if (coverDate && versionLatestDate) {
+    const same = coverDate.getFullYear() === versionLatestDate.getFullYear() && coverDate.getMonth() === versionLatestDate.getMonth();
+    checks.crosssheet.push(same
+      ? { ok: true, sheet: 'Cover ↔ Version control', msg: `Both show ${monthYear(coverDate)}.` }
+      : { ok: false, sheet: 'Cover ↔ Version control', msg: `Cover date (${monthYear(coverDate)}) does not match latest version history date (${monthYear(versionLatestDate)}).` });
+  }
+
+  // Cross-sheet: exec total vs findings
+  if (execTotal > 0 && findingsCount > 0) {
+    checks.crosssheet.push(execTotal === findingsCount
+      ? { ok: true, sheet: 'Executive summary ↔ Valid findings', msg: `Total count (${execTotal}) matches Valid Findings rows (${findingsCount}).` }
+      : { ok: false, sheet: 'Executive summary ↔ Valid findings', msg: `Executive summary total (${execTotal}) does not match Valid Findings row count (${findingsCount}).` });
+  }
+
+  // Cross-sheet: description instances vs findings
+  if (descTotalInstances > 0 && findingsCount > 0) {
+    checks.crosssheet.push(descTotalInstances === findingsCount
+      ? { ok: true, sheet: 'Vuln descriptions ↔ Valid findings', msg: `Instance count (${descTotalInstances}) matches Valid Findings rows (${findingsCount}).` }
+      : { ok: false, sheet: 'Vuln descriptions ↔ Valid findings', msg: `Description instances (${descTotalInstances}) do not match Valid Findings count (${findingsCount}).` });
+  }
+
+  // Filename: app name
+  if (appName) {
+    const fnStripped = _fileName.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const appStripped = appName.toLowerCase().replace(/[^a-z0-9]/g, '');
+    checks.filename.push(fnStripped.includes(appStripped)
+      ? { ok: true, sheet: 'Filename — app name', msg: `Filename contains the application name "${appName}".` }
+      : { ok: false, sheet: 'Filename — app name', msg: `Filename "${_fileName}" does not appear to contain the app name "${appName}".` });
+  }
+
+  // Filename: month & year vs cover
+  if (coverDate) {
+    checks.filename.push(filenameHasMonthYear(_fileName, coverDate)
+      ? { ok: true, sheet: 'Filename — cover date', msg: `Filename contains ${monthYearShort(coverDate)} matching the cover page date.` }
+      : { ok: false, sheet: 'Filename — cover date', msg: `Filename does not contain ${monthYearShort(coverDate)} (the cover page date).` });
+  }
+
+  // Filename: month & year vs version history
+  if (versionLatestDate) {
+    checks.filename.push(filenameHasMonthYear(_fileName, versionLatestDate)
+      ? { ok: true, sheet: 'Filename — version history date', msg: `Filename month/year matches the latest version history date (${monthYearShort(versionLatestDate)}).` }
+      : { ok: false, sheet: 'Filename — version history date', msg: `Filename does not contain ${monthYearShort(versionLatestDate)} (the latest version history date).` });
+  }
+
+  _lastChecks = [...checks.filename, ...checks.sheets, ...checks.crosssheet];
+  renderResults(checks);
+}
+
+function renderResults(groups) {
+  const all = [...groups.filename, ...groups.sheets, ...groups.crosssheet];
+  const failCount = all.filter(c => !c.ok).length;
+
+  const bar = document.getElementById('summary-bar');
+  bar.className = 'summary-bar ' + (failCount === 0 ? 'pass' : 'fail');
+  bar.innerHTML = failCount === 0
+    ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> All ${all.length} checks passed — report looks good!`
+    : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> ${failCount} issue(s) found across ${all.length} checks`;
+
+  const container = document.getElementById('checks-container');
+  container.innerHTML = '';
+
+  const sections = [
+    { label: 'Filename checks', items: groups.filename },
+    { label: 'Sheet checks', items: groups.sheets },
+    { label: 'Cross-sheet consistency', items: groups.crosssheet },
+  ];
+
+  for (const sec of sections) {
+    if (!sec.items.length) continue;
+    const label = document.createElement('div');
+    label.className = 'section-label';
+    label.textContent = sec.label;
+    container.appendChild(label);
+    for (const c of sec.items) {
+      const item = document.createElement('div');
+      item.className = 'check-item ' + (c.ok ? 'ok' : 'fail');
+      item.innerHTML = c.ok
+        ? `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3b6d11" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><div><div class="check-sheet">${c.sheet}</div><div class="check-msg">${c.msg}</div></div>`
+        : `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#854f0b" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div><div class="check-sheet">${c.sheet}</div><div class="check-msg">${c.msg}</div></div>`;
+      container.appendChild(item);
+    }
+  }
+
+  document.getElementById('results').style.display = 'block';
+}
+
+function copyReport() {
+  if (!_lastChecks.length) return;
+  const lines = _lastChecks.map(c => `[${c.ok ? 'OK' : 'ISSUE'}] ${c.sheet}: ${c.msg}`);
+  const text = `Vulnerability Report Integrity Check\n${new Date().toLocaleString()}\nFile: ${_fileName}.xlsx\n\n${lines.join('\n')}`;
+  navigator.clipboard.writeText(text).then(() => {
+    const lbl = document.getElementById('copy-label');
+    lbl.textContent = 'Copied!';
+    setTimeout(() => lbl.textContent = 'Copy report', 2000);
+  });
+}
+</script>
+</body>
+</html>
